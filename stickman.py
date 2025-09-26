@@ -113,7 +113,7 @@ def open_webcam(webcam_id, output_mode):
         print_error(f"Impossibile aprire la webcam con ID {webcam_id}")
         return
 
-    print_success(f"Webcam {webcam_id} aperta correttamente")
+    print(f"\n - Webcam {webcam_id} aperta correttamente\n")
 
     # Inizializza la virtual camera solo se necessario
     virtual_cam = None
@@ -129,10 +129,10 @@ def open_webcam(webcam_id, output_mode):
             output_mode = 'window'
 
     print_separator()
-    print_info(f"Modalità output: {output_mode.upper()}")
-    print_info("Controlli:")
-    print("  • Premi 'q' per uscire")
-    print("  • Premi 'Ctrl+C' per uscire")
+    print(f"\n - Modalità output: {output_mode.upper()}")
+    print(" - Controlli:")
+    print("   • Premi 'q' per uscire")
+    print("   • Premi 'Ctrl+C' per uscire\n")
     print_separator()
 
     try:
@@ -164,22 +164,22 @@ def open_webcam(webcam_id, output_mode):
                     virtual_cam.send(img)
                     virtual_cam.sleep_until_next_frame()
 
-                # Calcolo FPS ogni 30 frames
-                frame_count += 1
-                if frame_count % 30 == 0:
-                    elapsed_time = time.time() - start_time
-                    fps = 30 / elapsed_time
-                    print(f"\r🎥 FPS: {fps:.1f} | Frame: {frame_count} | Premi 'q' o 'Ctrl+C' per uscire", end="", flush=True)
-                    start_time = time.time()
+                # # Calcolo FPS ogni 30 frames
+                # frame_count += 1
+                # if frame_count % 30 == 0:
+                #     elapsed_time = time.time() - start_time
+                #     fps = 30 / elapsed_time
+                #     print(f"\n - 🎥 FPS: {fps:.1f} | Frame: {frame_count} | Premi 'q' o 'Ctrl+C' per uscire", end="", flush=True)
+                #     start_time = time.time()
 
                 # Controllo per uscire con 'q'
                 key = cv2.waitKey(1) & 0xFF
                 if key == ord('q'):
-                    print_info("\nUscita richiesta dall'utente (tasto 'q')")
+                    print("\n - Uscita richiesta dall'utente (tasto 'q')")
                     break
 
     except KeyboardInterrupt:
-        print_info("\nInterruzione da Ctrl+C")
+        print("\n - Interruzione da Ctrl+C")
     except Exception as e:
         print_error(f"Errore durante l'esecuzione: {e}")
     finally:
@@ -189,18 +189,18 @@ def cleanup():
     """Pulizia delle risorse"""
     global cap, virtual_cam
 
-    print_info("Pulizia risorse in corso...")
+    print(" - Pulizia risorse in corso...")
 
     if cap:
         cap.release()
-        print_success("Webcam rilasciata")
+        print(" - ✅ Webcam rilasciata")
 
     if virtual_cam:
         virtual_cam.close()
-        print_success("Virtual camera chiusa")
+        print(" - ✅ Virtual camera chiusa")
 
     cv2.destroyAllWindows()
-    print_success("Finestre chiuse")
+    print(" - ✅ Finestre chiuse\n")
     print_separator()
 
 def main():
